@@ -85,3 +85,23 @@ ul {
   font-size: 1.7rem;
   color: var(--heading-color);
 }
+
+.fs-7 {
+  font-size: 0.8rem;
+}
+
+.user-icon-border {
+  display: flex;
+  justify-content: center;
+  border: 2px solid;
+  border-radius: 55px;
+  width: 40px;
+  height: 40px;
+  cursor: pointer;
+}
+
+.icon-center {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
