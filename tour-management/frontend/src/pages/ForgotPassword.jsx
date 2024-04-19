@@ -9,7 +9,6 @@ import { BASE_URL } from "./../utils/config";
 const ForgotPassword = () => {
   const [credentitals, setCredentials] = useState({
     email: undefined,
-    phone: undefined,
   });
   const navigate = useNavigate();
 
@@ -20,16 +19,18 @@ const ForgotPassword = () => {
   const handleClick = async (e) => {
     e.preventDefault();
     try {
-      const res = await fetch(`${BASE_URL}/auth/forgot-password`, {
+      const res = await fetch(`${BASE_URL}/auth/check-email`, {
         method: "post",
         headers: {
           "content-type": "application/json",
         },
         body: JSON.stringify(credentitals),
       });
-      // const result = await res.json();
-      navigate("/change-password");
-      if (!res.ok) {
+      const result = await res.json();
+      if (result.success) {
+        navigate("/change-password");
+      } else {
+        throw new Error("Not found user!");
       }
     } catch (err) {
       alert(err);
@@ -59,15 +60,6 @@ const ForgotPassword = () => {
                       placeholder="Email"
                       required
                       id="email"
-                      onChange={handleChange}
-                    />
-                  </FormGroup>
-                  <FormGroup>
-                    <input
-                      type="phone"
-                      placeholder="Phone"
-                      required
-                      id="phone"
                       onChange={handleChange}
                     />
                   </FormGroup>

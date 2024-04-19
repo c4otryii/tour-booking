@@ -6,6 +6,7 @@ import loginImg from "../assets/images/login.png";
 import userIcon from "../assets/images/user.png";
 import { AuthContext } from "./../context/AuthContext";
 import { BASE_URL } from "./../utils/config";
+import { setAccessToken } from "../utils/token";
 
 const Login = () => {
   const [credentitals, setCredentials] = useState({
@@ -32,9 +33,13 @@ const Login = () => {
         body: JSON.stringify(credentitals),
       });
       const result = await res.json();
-      if (!res.ok) alert(result.message);
-      dispatch({ type: "LOGIN_SUCCESS", payload: result.data });
-      navigate("/");
+      if (result.token) {
+        setAccessToken(result.token);
+        dispatch({ type: "LOGIN_SUCCESS", payload: result.data });
+        navigate("/");
+      } else {
+        alert(result.message);
+      }
     } catch (err) {
       dispatch({ type: "LOGIN_FAILURE", payload: err.message });
     }

@@ -5,11 +5,12 @@ import "../styles/login.css";
 import loginImg from "../assets/images/login.png";
 import userIcon from "../assets/images/user.png";
 import { BASE_URL } from "./../utils/config";
+import { getAccessToken } from "../utils/token";
 
 const ChangePassword = () => {
   const [credentitals, setCredentials] = useState({
-    email: undefined,
-    phone: undefined,
+    password: undefined,
+    confirmPassword: undefined,
   });
   const navigate = useNavigate();
 
@@ -19,19 +20,29 @@ const ChangePassword = () => {
 
   const handleClick = async (e) => {
     e.preventDefault();
-    try {
-      const res = await fetch(`${BASE_URL}/auth/forgot-password`, {
-        method: "post",
-        headers: {
-          "content-type": "application/json",
-        },
-        body: JSON.stringify(credentitals),
-      });
-      const result = await res.json();
-      if (!res.ok) alert(result.message);
-      navigate("/");
-    } catch (err) {
-      alert(err);
+    if (credentitals.password === credentitals.confirmPassword) {
+      try {
+        const accessToken = getAccessToken();
+        const res = await fetch(`${BASE_URL}/auth/change-password`, {
+          method: "put",
+          headers: {
+            "content-type": "application/json",
+            Authorization: accessToken,
+          },
+          body: JSON.stringify({ password: credentitals.password }),
+        });
+        const result = await res.json();
+        if (result.success) {
+          localStorage.clear();
+          localStorage.setItem("user", null);
+          alert("Change password success, please login again!");
+          navigate("/login");
+        }
+      } catch (err) {
+        alert(err);
+      }
+    } else {
+      alert("Warning: Passwords must match!");
     }
   };
 
@@ -66,7 +77,7 @@ const ChangePassword = () => {
                       type="text"
                       placeholder="Confirm password"
                       required
-                      id="confimrPassword"
+                      id="confirmPassword"
                       onChange={handleChange}
                     />
                   </FormGroup>
