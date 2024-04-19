@@ -25,7 +25,7 @@ const ChangePassword = () => {
       navigate("/forgot-password");
       alert("Error: email false");
     }
-  }, []);
+  }, [emailConfirm, navigate]);
 
   const handleClick = async (e) => {
     e.preventDefault();
@@ -36,7 +36,7 @@ const ChangePassword = () => {
           method: "put",
           headers: {
             "content-type": "application/json",
-            Authorization: accessToken === 'null' ? emailConfirm : accessToken,
+            Authorization: accessToken === "null" ? emailConfirm : accessToken,
           },
           body: JSON.stringify({ password: credentitals.password }),
         });
