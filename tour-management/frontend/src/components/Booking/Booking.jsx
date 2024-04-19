@@ -1,9 +1,10 @@
 import React, { useState, useContext } from "react";
 import "./booking.css";
-import { Form, FormGroup, ListGroup, ListGroupItem, Button } from "reactstrap";
-import { useNavigate, Link } from "react-router-dom";
+import { Form, FormGroup, ListGroup, ListGroupItem } from "reactstrap";
+import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../../context/AuthContext";
 import { BASE_URL } from "../../utils/config";
+import { PayPalButton } from "react-paypal-button-v2";
 
 const Booking = ({ tour, avgRating }) => {
   const { price, reviews, title } = tour;
@@ -47,8 +48,6 @@ const Booking = ({ tour, avgRating }) => {
       if (!res.ok) {
         return alert(result.message);
       }
-      navigate("/checkout");
-      // navigate("/thank-you");
     } catch (err) {
       alert(err.message);
     }
@@ -123,12 +122,15 @@ const Booking = ({ tour, avgRating }) => {
             <span> ${totalAmount}</span>
           </ListGroupItem>
         </ListGroup>
-
-        <Link to={`/checkout?totalAmount=${totalAmount}`}>
-            <Button className="btn primary__btn w-100 mt-4" onClick={handleClick}>
-                Book Now
-            </Button>
-        </Link>
+      </div>
+      <div className="paypal-btn">
+      <PayPalButton
+          amount={totalAmount}
+          onSuccess={(details) => {
+            alert("Transaction completed by " + details.payer.name.given_name);
+            navigate('/thank-you')
+          }}
+        />
       </div>
     </div>
   );

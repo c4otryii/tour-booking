@@ -25,6 +25,7 @@ const Header = () => {
   const navigate = useNavigate();
   const { user, dispatch } = useContext(AuthContext);
   const logout = () => {
+    localStorage.setItem("accessToken", null);
     dispatch({ type: "LOGOUT" });
     navigate("/");
   };
@@ -53,7 +54,13 @@ const Header = () => {
         <Row>
           <div className="nav__wrapper d-flex align-items-center justify-content-between">
             <div className="logo">
-              <img src={logo} alt="" />
+              <img
+                src={logo}
+                alt=""
+                onClick={() => {
+                  navigate("/home");
+                }}
+              />
             </div>
 
             <div className="navigation">
@@ -77,7 +84,12 @@ const Header = () => {
               <div className="nav__btns d-flex align-items-center gap-4">
                 {user ? (
                   <>
-                    <h5 className="mb-0">{user.username}</h5>
+                    <div
+                      className="user-icon-border"
+                      onClick={() => navigate("user-infor")}
+                    >
+                      <i class="ri-user-line icon-center"></i>
+                    </div>
                     <Button className="btn btn-dark" onClick={logout}>
                       Logout
                     </Button>

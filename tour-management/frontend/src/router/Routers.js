@@ -7,7 +7,9 @@ import SearchResultList from "./../pages/SearchResultList";
 import TourDetails from "./../pages/TourDetails";
 import Tours from "./../pages/Tours";
 import ThankYou from "../pages/ThankYou";
-import Checkout from "../components/Booking/Checkout";
+import ForgotPassword from "../pages/ForgotPassword";
+import ChangePassword from "../pages/ChangePassword";
+import UserInfor from "../pages/UserInfor";
 
 const Routers = () => {
   return (
@@ -17,10 +19,12 @@ const Routers = () => {
       <Route path="/tours" element={<Tours />} />
       <Route path="/tours/:id" element={<TourDetails />} />
       <Route path="/login" element={<Login />} />
+      <Route path="/user-infor" element={<UserInfor />} />
+      <Route path="/forgot-password" element={<ForgotPassword />} />
+      <Route path="/change-password" element={<ChangePassword />} />
       <Route path="/register" element={<Register />} />
       <Route path="/thank-you" element={<ThankYou />} />
       <Route path="/tours/search" element={<SearchResultList />} />
-      <Route path="/checkout" element={<Checkout />} />
     </Routes>
   );
 };
