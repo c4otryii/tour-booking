@@ -25,6 +25,7 @@ const Header = () => {
   const navigate = useNavigate();
   const { user, dispatch } = useContext(AuthContext);
   const logout = () => {
+    localStorage.setItem("accessToken", null);
     dispatch({ type: "LOGOUT" });
     navigate("/");
   };
