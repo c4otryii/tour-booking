@@ -1,0 +1,37 @@
+.checkout-container {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  height: 100vh;
+  margin-bottom: -400px;
+}
+
+.checkout-content {
+  width: 50%;
+  text-align: center;
+  position: relative;
+  margin: 20px;
+}
+
+.checkout-content .checkout-gif {
+  float: left;
+  margin-left: 20px;
+  width: 500px;
+  height: 500px;
+}
+
+.checkout-content .checkout-form {
+  float: right;
+  width: 420px;
+  height: 420px;
+  margin-top: 50px;
+}
+
+.checkout-info-form input {
+  width: 100%;
+}
+
+.payment-bottom {
+  text-align: center;
+  display: block;
+}
