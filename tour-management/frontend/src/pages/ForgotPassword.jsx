@@ -1,15 +1,17 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { Container, Row, Col, Form, FormGroup, Button } from "reactstrap";
 import { useNavigate } from "react-router-dom";
 import "../styles/login.css";
 import loginImg from "../assets/images/login.png";
 import userIcon from "../assets/images/user.png";
 import { BASE_URL } from "./../utils/config";
+import { AuthContext } from "./../context/AuthContext";
 
 const ForgotPassword = () => {
   const [credentitals, setCredentials] = useState({
     email: undefined,
   });
+  const { dispatch } = useContext(AuthContext);
   const navigate = useNavigate();
 
   const handleChange = (e) => {
@@ -29,6 +31,7 @@ const ForgotPassword = () => {
       const result = await res.json();
       if (result.success) {
         navigate("/change-password");
+        dispatch({ type: "CONFIRM_EMAIL", payload: result.data });
       } else {
         throw new Error("Not found user!");
       }

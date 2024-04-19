@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Container, Row, Col, Form, FormGroup, Button } from "reactstrap";
 import { useNavigate } from "react-router-dom";
 import "../styles/login.css";
@@ -6,17 +6,26 @@ import loginImg from "../assets/images/login.png";
 import userIcon from "../assets/images/user.png";
 import { BASE_URL } from "./../utils/config";
 import { getAccessToken } from "../utils/token";
+import { AuthContext } from "../context/AuthContext";
 
 const ChangePassword = () => {
   const [credentitals, setCredentials] = useState({
     password: undefined,
     confirmPassword: undefined,
   });
+  const { dispatch, emailConfirm } = useContext(AuthContext);
   const navigate = useNavigate();
 
   const handleChange = (e) => {
     setCredentials((prev) => ({ ...prev, [e.target.id]: e.target.value }));
   };
+
+  useEffect(() => {
+    if (!emailConfirm && !getAccessToken()) {
+      navigate("/forgot-password");
+      alert("Error: email false");
+    }
+  }, []);
 
   const handleClick = async (e) => {
     e.preventDefault();
@@ -27,7 +36,7 @@ const ChangePassword = () => {
           method: "put",
           headers: {
             "content-type": "application/json",
-            Authorization: accessToken,
+            Authorization: accessToken === 'null' ? emailConfirm : accessToken,
           },
           body: JSON.stringify({ password: credentitals.password }),
         });
@@ -36,6 +45,7 @@ const ChangePassword = () => {
           localStorage.clear();
           localStorage.setItem("user", null);
           alert("Change password success, please login again!");
+          dispatch({ type: "CONFIRM_EMAIL_FALSE" });
           navigate("/login");
         }
       } catch (err) {
